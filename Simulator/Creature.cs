@@ -1,47 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Simulator;
+﻿namespace Simulator;
 
 public class Creature
 {
-    // Prywatne pola dla właściwości
     private string _name = "Unknown";
     private int _level = 1;
 
-    // Właściwość automatyczna Name z walidacją
     public string Name
     {
         get => _name;
         set
         {
-            // Upewnij się, że Name można ustawić tylko raz
+            // Only allow setting the name if it is still the default
             if (_name != "Unknown") return;
 
-            // Usuwanie spacji na początku i końcu
             string trimmedValue = value.Trim();
 
-            // Upewnij się, że ma co najmniej 3 znaki
+            // Minimum length handling
             if (trimmedValue.Length < 3)
             {
                 trimmedValue = trimmedValue.PadRight(3, '#');
             }
-            // Upewnij się, że ma najwyżej 25 znaków
             else if (trimmedValue.Length > 25)
             {
                 trimmedValue = trimmedValue.Substring(0, 25);
             }
 
-            // Upewnij się, że ma co najmniej 3 znaki po przycięciu
+            // Ensure it's at least 3 characters after trimming and padding
             if (trimmedValue.Length < 3)
             {
                 trimmedValue = trimmedValue.PadRight(3, '#');
             }
 
-            // Upewnij się, że pierwszy znak jest wielką literą
+            // Capitalize the first character if it's lowercase
             if (char.IsLower(trimmedValue[0]))
             {
                 trimmedValue = char.ToUpper(trimmedValue[0]) + trimmedValue[1..];
@@ -51,15 +41,15 @@ public class Creature
         }
     }
 
-    // Właściwość automatyczna Level z walidacją
     public int Level
     {
         get => _level;
         set
         {
-            // Upewnij się, że Level można ustawić tylko raz
+            // Only allow setting the level if it is still the default
             if (_level != 1) return;
 
+            // Clamp the level to the range of 1-10
             if (value < 1)
                 _level = 1;
             else if (value > 10)
@@ -69,32 +59,45 @@ public class Creature
         }
     }
 
-    // Konstruktor przyjmujący wartości początkowe
+    // Constructors
     public Creature(string name, int level = 1)
     {
         Name = name;
-        Level = level;
+        Level = level; // Note: this will set the level to the default if not in range
     }
 
-    // Bezparametrowy konstruktor
-    public Creature()
-    {
-        // Nie robi nic
-    }
+    public Creature() { }
 
-    // Metoda SayHi
+    // Methods
     public void SayHi()
     {
         Console.WriteLine($"Hello, my name is {Name} and I am level {Level}.");
     }
 
-    // Właściwość do odczytu Info
     public string Info => $"{Name}, Level: {Level}";
 
-    // Metoda Upgrade
     public void Upgrade()
     {
         if (_level < 10)
             _level++;
+    }
+
+    public void Go(Direction direction)
+    {
+        Console.WriteLine($"{Name} goes {direction.ToString().ToLower()}.");
+    }
+
+    public void Go(Direction[] directions)
+    {
+        foreach (var direction in directions)
+        {
+            Go(direction);
+        }
+    }
+
+    public void Go(string directions)
+    {
+        var directionArray = DirectionParser.Parse(directions);
+        Go(directionArray);
     }
 }
