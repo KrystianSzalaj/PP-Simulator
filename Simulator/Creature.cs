@@ -1,103 +1,157 @@
-﻿namespace Simulator;
+﻿using System;
 
-public class Creature
+namespace Simulator
 {
-    private string _name = "Unknown";
-    private int _level = 1;
-
-    public string Name
+    public abstract class Creature
     {
-        get => _name;
-        set
+        private string _name = "Unknown";
+        private int _level = 1;
+
+        public string Name
         {
-            // Only allow setting the name if it is still the default
-            if (_name != "Unknown") return;
-
-            string trimmedValue = value.Trim();
-
-            // Minimum length handling
-            if (trimmedValue.Length < 3)
+            get => _name;
+            set
             {
-                trimmedValue = trimmedValue.PadRight(3, '#');
-            }
-            else if (trimmedValue.Length > 25)
-            {
-                trimmedValue = trimmedValue.Substring(0, 25);
-            }
+                if (_name != "Unknown") return;
 
-            // Ensure it's at least 3 characters after trimming and padding
-            if (trimmedValue.Length < 3)
-            {
-                trimmedValue = trimmedValue.PadRight(3, '#');
-            }
+                string trimmedValue = value.Trim();
 
-            // Capitalize the first character if it's lowercase
-            if (char.IsLower(trimmedValue[0]))
-            {
-                trimmedValue = char.ToUpper(trimmedValue[0]) + trimmedValue[1..];
-            }
+                if (trimmedValue.Length < 3)
+                {
+                    trimmedValue = trimmedValue.PadRight(3, '#');
+                }
+                else if (trimmedValue.Length > 25)
+                {
+                    trimmedValue = trimmedValue.Substring(0, 25);
+                }
 
-            _name = trimmedValue;
+                if (trimmedValue.Length < 3)
+                {
+                    trimmedValue = trimmedValue.PadRight(3, '#');
+                }
+
+                if (char.IsLower(trimmedValue[0]))
+                {
+                    trimmedValue = char.ToUpper(trimmedValue[0]) + trimmedValue[1..];
+                }
+
+                _name = trimmedValue;
+            }
         }
-    }
 
-    public int Level
-    {
-        get => _level;
-        set
+        public int Level
         {
-            // Only allow setting the level if it is still the default
-            if (_level != 1) return;
+            get => _level;
+            set
+            {
+                if (_level != 1) return;
 
-            // Clamp the level to the range of 1-10
-            if (value < 1)
-                _level = 1;
-            else if (value > 10)
-                _level = 10;
-            else
-                _level = value;
+                if (value < 1)
+                    _level = 1;
+                else if (value > 10)
+                    _level = 10;
+                else
+                    _level = value;
+            }
         }
-    }
 
-    // Constructors
-    public Creature(string name, int level = 1)
-    {
-        Name = name;
-        Level = level; // Note: this will set the level to the default if not in range
-    }
-
-    public Creature() { }
-
-    // Methods
-    public void SayHi()
-    {
-        Console.WriteLine($"Hello, my name is {Name} and I am level {Level}.");
-    }
-
-    public string Info => $"{Name}, Level: {Level}";
-
-    public void Upgrade()
-    {
-        if (_level < 10)
-            _level++;
-    }
-
-    public void Go(Direction direction)
-    {
-        Console.WriteLine($"{Name} goes {direction.ToString().ToLower()}.");
-    }
-
-    public void Go(Direction[] directions)
-    {
-        foreach (var direction in directions)
+        protected Creature(string name, int level = 1)
         {
-            Go(direction);
+            Name = name;
+            Level = level;
         }
-    }
 
-    public void Go(string directions)
-    {
-        var directionArray = DirectionParser.Parse(directions);
-        Go(directionArray);
+        protected Creature() { }
+
+        public abstract void SayHi();
+        public abstract int Power { get; }
+
+        // Oznaczamy Info jako wirtualne, aby mogło być przesłonięte
+        public virtual string Info => $"{Name}, Level: {Level}";
+
+        public void Upgrade()
+        {
+            if (_level < 10)
+                _level++;
+        }
+
+        public class Elf : Creature
+        {
+            private int _agility;
+            private int _singCount;
+
+            public int Agility
+            {
+                get => _agility;
+                private set => _agility = Math.Clamp(value, 0, 10);
+            }
+
+            public Elf() : base("Unknown Elf", 1)
+            {
+                Agility = 0;
+            }
+
+            public Elf(string name, int level = 1, int agility = 0) : base(name, level)
+            {
+                Agility = agility;
+            }
+
+            public void Sing()
+            {
+                _singCount++;
+                if (_singCount % 3 == 0)
+                {
+                    Agility++;
+                }
+            }
+
+            public override void SayHi()
+            {
+                Console.WriteLine($"Hi, I am an Elf named {Name} with level {Level} and agility {Agility}.");
+            }
+
+            public override int Power => (8 * Level) + (2 * Agility);
+
+            // Teraz Info może być przesłonięta
+            public override string Info => $"{Name}, Level: {Level}, Agility: {Agility}";
+        }
+
+        public class Orc : Creature
+        {
+            private int _rage;
+            private int _huntCount;
+
+            public int Rage
+            {
+                get => _rage;
+                private set => _rage = Math.Clamp(value, 0, 10);
+            }
+
+            public Orc() : base("Unknown Orc", 1)
+            {
+                Rage = 0;
+            }
+
+            public Orc(string name, int level = 1, int rage = 0) : base(name, level)
+            {
+                Rage = rage;
+            }
+
+            public void Hunt()
+            {
+                _huntCount++;
+                if (_huntCount % 2 == 0)
+                {
+                    Rage++;
+                }
+            }
+
+            public override void SayHi()
+            {
+                Console.WriteLine($"Hi, I am an Orc named {Name} with level {Level} and rage {Rage}.");
+            }
+
+            public override int Power => (7 * Level) + (3 * Rage);
+        }
     }
 }
