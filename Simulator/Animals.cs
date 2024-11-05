@@ -1,49 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Simulator;
-
-public class Animals
+﻿namespace Simulator
 {
-    // Prywatne pole dla właściwości
-    private string _description = "Unknown";
-
-    // Właściwość required
-    public required string Description
+    public class Animals
     {
-        get => _description;
-        init
+        private string _description = "Unknown Animal";
+        private int _size = 1;
+
+        public string Description
         {
-            // Usuwanie spacji na początku i końcu
-            string trimmedValue = value.Trim();
+            get => _description;
+            set => _description = Validator.Shortener(value, 3, 20, '#');
+        }
 
-            // Upewnij się, że ma co najmniej 3 znaki
-            if (trimmedValue.Length < 3)
-            {
-                trimmedValue = trimmedValue.PadRight(3, '#');
-            }
-            // Upewnij się, że ma najwyżej 15 znaków
-            else if (trimmedValue.Length > 15)
-            {
-                trimmedValue = trimmedValue.Substring(0, 15);
-            }
+        public int Size
+        {
+            get => _size;
+            set => _size = Validator.Limiter(value, 1, 10000);
+        }
 
-            // Upewnij się, że ma co najmniej 3 znaki po przycięciu
-            if (trimmedValue.Length < 3)
-            {
-                trimmedValue = trimmedValue.PadRight(3, '#');
-            }
+        public virtual string Info => $"{Description} <{Size}>";
 
-            _description = trimmedValue;
+        public override string ToString()
+        {
+            return $"{GetType().Name.ToUpper()}: {Info}";
         }
     }
-
-    // Właściwość z domyślną wartością
-    public uint Size { get; set; } = 3;
-
-    // Właściwość do odczytu Info
-    public string Info => $"{Description} <{Size}>";
 }
