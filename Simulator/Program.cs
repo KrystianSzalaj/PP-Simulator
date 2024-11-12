@@ -1,45 +1,49 @@
-﻿using System;
-
-namespace Simulator
+﻿public class Program
 {
-    public class Program
+    static void Main()
     {
-        static void Main()
+        Lab5a();
+    }
+
+    static void Lab5a()
+    {
+        try
         {
-            Lab4a();
+            Console.WriteLine("Creating rectangles with various points and coordinates:");
+
+            // Test with coordinates
+            Rectangle rect1 = new Rectangle(2, 3, 10, 8);
+            Console.WriteLine(rect1);  // Expected: (2, 3):(10, 8)
+
+            // Test with unordered coordinates
+            Rectangle rect2 = new Rectangle(10, 8, 2, 3);
+            Console.WriteLine(rect2);  // Expected: (2, 3):(10, 8)
+
+            // Test with points
+            Point p1 = new Point(4, 5);
+            Point p2 = new Point(12, 15);
+            Rectangle rect3 = new Rectangle(p1, p2);
+            Console.WriteLine(rect3);  // Expected: (4, 5):(12, 15)
+
+            // Test collinear points exception
+            try
+            {
+                Rectangle invalidRect = new Rectangle(5, 5, 5, 10);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Exception caught: {ex.Message}");
+            }
+
+            // Test point containment
+            Point testPointInside = new Point(6, 7);
+            Point testPointOutside = new Point(1, 1);
+            Console.WriteLine($"rect1.Contains({testPointInside}): {rect1.Contains(testPointInside)}"); // Expected: True
+            Console.WriteLine($"rect1.Contains({testPointOutside}): {rect1.Contains(testPointOutside)}"); // Expected: False
         }
-
-        static void Lab4a()
+        catch (Exception ex)
         {
-            Console.WriteLine("HUNT TEST\n");
-            var o = new Creature.Orc("Gorbag", rage: 7);
-            o.SayHi();
-            for (int i = 0; i < 10; i++)
-            {
-                o.Hunt();
-                o.SayHi();
-            }
-
-            Console.WriteLine("\nSING TEST\n");
-            var e = new Creature.Elf("Legolas", agility: 2);
-            e.SayHi();
-            for (int i = 0; i < 10; i++)
-            {
-                e.Sing();
-                e.SayHi();
-            }
-
-            Console.WriteLine("\nPOWER TEST\n");
-            Creature[] creatures = {
-                o,
-                e,
-                new Creature.Orc("Morgash", 3, 8),
-                new Creature.Elf("Elandor", 5, 3)
-            };
-            foreach (Creature creature in creatures)
-            {
-                Console.WriteLine($"{creature.Name,-15}: {creature.Power}");
-            }
+            Console.WriteLine($"Unexpected exception: {ex.Message}");
         }
     }
 }
