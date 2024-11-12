@@ -1,45 +1,55 @@
-﻿public class Program
+﻿// Dodaj użycie Simulator.Direction
+using Simulator.Maps;
+
+public class Program
 {
     static void Main()
     {
-        Lab5a();
+        Lab5b();
     }
 
-    static void Lab5a()
+    static void Lab5b()
     {
         try
         {
-            Console.WriteLine("Creating rectangles with various points and coordinates:");
+            Console.WriteLine("Testing SmallSquareMap:");
 
-            // Test with coordinates
-            Rectangle rect1 = new Rectangle(2, 3, 10, 8);
-            Console.WriteLine(rect1);  // Expected: (2, 3):(10, 8)
+            // Test with valid size
+            var map = new SmallSquareMap(10);
+            Console.WriteLine($"Map Size: {map.Size}");
 
-            // Test with unordered coordinates
-            Rectangle rect2 = new Rectangle(10, 8, 2, 3);
-            Console.WriteLine(rect2);  // Expected: (2, 3):(10, 8)
+            // Test Exist
+            Point insidePoint = new Point(3, 3);
+            Point outsidePoint = new Point(10, 10);
 
-            // Test with points
-            Point p1 = new Point(4, 5);
-            Point p2 = new Point(12, 15);
-            Rectangle rect3 = new Rectangle(p1, p2);
-            Console.WriteLine(rect3);  // Expected: (4, 5):(12, 15)
+            Console.WriteLine($"Exist({insidePoint}): {map.Exist(insidePoint)}"); // Expected: True
+            Console.WriteLine($"Exist({outsidePoint}): {map.Exist(outsidePoint)}"); // Expected: False
 
-            // Test collinear points exception
+            // Test Next within bounds
+            Point start = new Point(5, 5);
+            Console.WriteLine($"Next({start}, Simulator.Direction.Right): {map.Next(start, Simulator.Direction.Right)}"); // Expected: (6, 5)
+
+            // Test Next outside bounds
+            Point edge = new Point(9, 9);
+            Console.WriteLine($"Next({edge}, Simulator.Direction.Right): {map.Next(edge, Simulator.Direction.Right)}"); // Expected: (9, 9)
+
+            // Test NextDiagonal within bounds
+            Console.WriteLine($"NextDiagonal({start}, Simulator.Direction.Up): {map.NextDiagonal(start, Simulator.Direction.Up)}"); // Expected: (6, 6)
+
+            // Test NextDiagonal outside bounds
+            Point diagonalEdge = new Point(9, 0);
+            Console.WriteLine($"NextDiagonal({diagonalEdge}, Simulator.Direction.Left): {map.NextDiagonal(diagonalEdge, Simulator.Direction.Left)}"); // Expected: (9, 0)
+
+            // Test with invalid size
             try
             {
-                Rectangle invalidRect = new Rectangle(5, 5, 5, 10);
+                var invalidMap = new SmallSquareMap(3); // Should throw exception
             }
-            catch (ArgumentException ex)
+            catch (ArgumentOutOfRangeException ex)
             {
-                Console.WriteLine($"Exception caught: {ex.Message}");
+                Console.WriteLine($"Caught exception: {ex.Message}");
             }
 
-            // Test point containment
-            Point testPointInside = new Point(6, 7);
-            Point testPointOutside = new Point(1, 1);
-            Console.WriteLine($"rect1.Contains({testPointInside}): {rect1.Contains(testPointInside)}"); // Expected: True
-            Console.WriteLine($"rect1.Contains({testPointOutside}): {rect1.Contains(testPointOutside)}"); // Expected: False
         }
         catch (Exception ex)
         {
