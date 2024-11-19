@@ -1,0 +1,11 @@
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\bin\Debug\net8.0\Simulator.deps.json
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\bin\Debug\net8.0\Simulator.dll
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\bin\Debug\net8.0\Simulator.pdb
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\obj\Debug\net8.0\Simulator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\obj\Debug\net8.0\Simulator.AssemblyInfoInputs.cache
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\obj\Debug\net8.0\Simulator.AssemblyInfo.cs
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\obj\Debug\net8.0\Simulator.csproj.CoreCompileInputs.cache
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\obj\Debug\net8.0\Simulator.dll
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\obj\Debug\net8.0\refint\Simulator.dll
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\obj\Debug\net8.0\Simulator.pdb
+C:\Users\kryst\Downloads\PP-Simulator-master (1)\PP-Simulator-master\Simulator\obj\Debug\net8.0\ref\Simulator.dll
